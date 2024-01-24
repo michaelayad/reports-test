@@ -25,8 +25,11 @@
     <title>تقرير الحصة الداخلى</title>
   </head>
   <body dir="rtl" lang="ar">
-    <div id="glitch-loader">
-      <div data-glitch="جارى التحميل ...." class="glitch">جارى التحميل...</div>
+    <div class="spinner w-100 h-100" id="spinner">
+      <p>
+        <span class="spinner-border"></span>
+        <span class="loading-text"></span>
+      </p>
     </div>
 
     <div class="pdf-container container-fluid py-4 px-4" id="pdf-content">
@@ -178,7 +181,7 @@
       <!-- ---------------------------------------- -->
       <!-- الطلاب المسجلين فى المجموعة -->
       <div
-        class="row primary-header-cell text-center registered-table"
+        class="row primary-header-cell text-center registered-table mx-2"
         id="pdf-register-title"
       >
         <h2 style="color: #1aaa81" class="fw-bolder">
@@ -2109,7 +2112,9 @@
       <!-- ---------------------------------------- -->
       <!-- الطلاب الغير المسجلين فى المجموعة -->
 
-      <div class="row secondary-header-cell text-center unregistered-header">
+      <div
+        class="row secondary-header-cell text-center unregistered-header mx-2"
+      >
         <h2 style="color: #f7850c" class="fw-bolder">
           الطلاب الغير المسجلين بالمجموعة
         </h2>
@@ -3614,10 +3619,24 @@
       </div>
       <!-- ----------------------------------------------------- -->
       <!-- ----------------------------------------------------- -->
+      <div class="row align-items-center" id="pdf-footer">
+        <div class="col-auto">
+          <div class="primary-text">استاذ انيس فرجان عبيد</div>
+          <div class="primary-text">موبايل : 01234567890</div>
+        </div>
+        <div class="col"><div class="center-line"></div></div>
+        <div class="col-auto row align-items-center">
+          <div class="col" style="color:  #1aaa81;">24\2\2024 5:30 م</div>
+          <div class="col">
+            <img src="logo.png" alt="." width="150px" />
+          </div>
+        </div>
+      </div>
     </div>
     <button class="save-button" id="downloadBtn">
       <i class="fa fa-save"></i>
     </button>
     <script type="module" src="index.js"></script>
+    <!-- <script type="module" src="index2.js"></script> -->
   </body>
 </html>

@@ -7,15 +7,17 @@ var font =
 document.getElementById("downloadBtn").addEventListener("click", async () => {
   // Save the original viewport content
   var originalViewport = document.querySelector("meta[name=viewport]").content;
-  document.getElementById("glitch-loader").style.display = "flex";
+  document.getElementById("spinner").style.display = "flex";
   // Change the viewport to a fixed width
   document
     .querySelector("meta[name=viewport]")
-    .setAttribute("content", "width=1200");
+    .setAttribute("content", "width=1400");
   console.log("sss");
   doc.addFileToVFS("Amiri-Regular-normal.ttf", font);
   doc.addFont("Amiri-Regular-normal.ttf", "Amiri-Regular", "normal");
   doc.setFont("Amiri-Regular");
+
+  var footer = document.getElementById("pdf-footer");
 
   // Define PDF dimensions
   var pdfWidth = 210;
@@ -23,8 +25,10 @@ document.getElementById("downloadBtn").addEventListener("click", async () => {
   var pdfMargin = 10; // Margin for borders or outlines
   var startY = pdfMargin;
   // Fixed window width in pixels
-  var windowWidth = 1200;
+  var windowWidth = 1400;
   var elementScaleFactor = pdfWidth / windowWidth;
+  var footerHeight = footer.offsetHeight * elementScaleFactor;
+
   // Use the html method to add content to the PDF
   // doc.setLineWidth(0.5);
   // doc.rect(10, 10, 190, 277);
@@ -38,17 +42,18 @@ document.getElementById("downloadBtn").addEventListener("click", async () => {
   );
 
   // Define initial y-coordinate and remaining space on the page
-  var remainingSpace = pdfHeight - startY;
+  var remainingSpace = pdfHeight - 2 * startY - footerHeight;
   var page = 1;
   // Loop through each element
   for (var i = 0; i < elements.length; i++) {
     var element = elements[i];
+    console.log("xxx", element);
 
     // Calculate the scaled element height based on the element width
     var elementHeight = element.offsetHeight * elementScaleFactor;
 
     // Check if the element fits in the remaining space
-    if (remainingSpace >= elementHeight) {
+    if (remainingSpace > elementHeight) {
       // Add border or outline for the page
       // Use the html method to add content to the PDF
       doc.setPage(page);
@@ -64,22 +69,32 @@ document.getElementById("downloadBtn").addEventListener("click", async () => {
       remainingSpace -= elementHeight;
 
       // Add a new page if the remaining space is exhausted
-      if (i < elements.length - 1 && remainingSpace < elementHeight) {
-        doc.addPage();
-        page++;
-        startY = pdfMargin;
-        remainingSpace = pdfHeight - startY;
-      }
+    } else {
+      doc.addPage();
+      page++;
+      startY = pdfMargin;
+      remainingSpace = pdfHeight - 2 * startY - footerHeight;
+      await doc.html(element, {
+        x: pdfMargin,
+        y: (page - 1) * pdfHeight + startY,
+        width: 190, // Set width to desktop width
+        windowWidth: windowWidth,
+      });
+
+      // Update the y-coordinate and remaining space
+      startY += elementHeight;
+      remainingSpace -= elementHeight;
     }
   }
   for (var i = 0; i < registerTableElements.length; i++) {
     var element = registerTableElements[i];
+    console.log("xxx", element);
 
     // Calculate the scaled element height based on the element width
     var elementHeight = element.offsetHeight * elementScaleFactor;
-    console.log(elementHeight);
+
     // Check if the element fits in the remaining space
-    if (remainingSpace >= elementHeight) {
+    if (remainingSpace > elementHeight) {
       // Add border or outline for the page
       // Use the html method to add content to the PDF
       doc.setPage(page);
@@ -87,7 +102,7 @@ document.getElementById("downloadBtn").addEventListener("click", async () => {
         x: pdfMargin,
         y: (page - 1) * pdfHeight + startY,
         width: 190, // Set width to desktop width
-        windowWidth: 1200,
+        windowWidth: windowWidth,
       });
 
       // Update the y-coordinate and remaining space
@@ -95,26 +110,32 @@ document.getElementById("downloadBtn").addEventListener("click", async () => {
       remainingSpace -= elementHeight;
 
       // Add a new page if the remaining space is exhausted
-      if (
-        i < registerTableElements.length - 1 &&
-        remainingSpace < elementHeight
-      ) {
-        doc.addPage();
-        page++;
-        startY = pdfMargin;
-        remainingSpace = pdfHeight - startY;
-      }
+    } else {
+      doc.addPage();
+      page++;
+      startY = pdfMargin;
+      remainingSpace = pdfHeight - 2 * startY - footerHeight;
+      await doc.html(element, {
+        x: pdfMargin,
+        y: (page - 1) * pdfHeight + startY,
+        width: 190, // Set width to desktop width
+        windowWidth: windowWidth,
+      });
+
+      // Update the y-coordinate and remaining space
+      startY += elementHeight;
+      remainingSpace -= elementHeight;
     }
   }
   for (var i = 0; i < unregisterElements.length; i++) {
     var element = unregisterElements[i];
+    console.log("xxx", element);
 
     // Calculate the scaled element height based on the element width
     var elementHeight = element.offsetHeight * elementScaleFactor;
-    console.log(elementHeight);
 
     // Check if the element fits in the remaining space
-    if (remainingSpace >= elementHeight) {
+    if (remainingSpace > elementHeight) {
       // Add border or outline for the page
       // Use the html method to add content to the PDF
       doc.setPage(page);
@@ -122,7 +143,7 @@ document.getElementById("downloadBtn").addEventListener("click", async () => {
         x: pdfMargin,
         y: (page - 1) * pdfHeight + startY,
         width: 190, // Set width to desktop width
-        windowWidth: 1200,
+        windowWidth: windowWidth,
       });
 
       // Update the y-coordinate and remaining space
@@ -130,22 +151,32 @@ document.getElementById("downloadBtn").addEventListener("click", async () => {
       remainingSpace -= elementHeight;
 
       // Add a new page if the remaining space is exhausted
-      if (i < unregisterElements.length - 1 && remainingSpace < elementHeight) {
-        doc.addPage();
-        page++;
-        startY = pdfMargin;
-        remainingSpace = pdfHeight - startY;
-      }
+    } else {
+      doc.addPage();
+      page++;
+      startY = pdfMargin;
+      remainingSpace = pdfHeight - 2 * startY - footerHeight;
+      await doc.html(element, {
+        x: pdfMargin,
+        y: (page - 1) * pdfHeight + startY,
+        width: 190, // Set width to desktop width
+        windowWidth: windowWidth,
+      });
+
+      // Update the y-coordinate and remaining space
+      startY += elementHeight;
+      remainingSpace -= elementHeight;
     }
   }
   for (var i = 0; i < unregisterTableElements.length; i++) {
     var element = unregisterTableElements[i];
+    console.log("xxx", element);
 
     // Calculate the scaled element height based on the element width
     var elementHeight = element.offsetHeight * elementScaleFactor;
 
     // Check if the element fits in the remaining space
-    if (remainingSpace >= elementHeight) {
+    if (remainingSpace > elementHeight) {
       // Add border or outline for the page
       // Use the html method to add content to the PDF
       doc.setPage(page);
@@ -153,7 +184,7 @@ document.getElementById("downloadBtn").addEventListener("click", async () => {
         x: pdfMargin,
         y: (page - 1) * pdfHeight + startY,
         width: 190, // Set width to desktop width
-        windowWidth: 1200,
+        windowWidth: windowWidth,
       });
 
       // Update the y-coordinate and remaining space
@@ -161,20 +192,34 @@ document.getElementById("downloadBtn").addEventListener("click", async () => {
       remainingSpace -= elementHeight;
 
       // Add a new page if the remaining space is exhausted
-      if (
-        i < unregisterTableElements.length - 1 &&
-        remainingSpace < elementHeight
-      ) {
-        doc.addPage();
-        page++;
-        startY = pdfMargin;
-        remainingSpace = pdfHeight - startY;
-      }
+    } else {
+      doc.addPage();
+      page++;
+      startY = pdfMargin;
+      remainingSpace = pdfHeight - 2 * startY - footerHeight;
+      await doc.html(element, {
+        x: pdfMargin,
+        y: (page - 1) * pdfHeight + startY,
+        width: 190, // Set width to desktop width
+        windowWidth: windowWidth,
+      });
+
+      // Update the y-coordinate and remaining space
+      startY += elementHeight;
+      remainingSpace -= elementHeight;
     }
+  }
+  for (let i = 0; i < page; i++) {
+    await doc.html(footer, {
+      x: pdfMargin,
+      y: (i + 1) * pdfHeight - footerHeight - pdfMargin,
+      width: 190, // Set width to desktop width
+      windowWidth: 1400,
+    });
   }
 
   doc.save("تقرير الحصة الداخلى.pdf");
-  document.getElementById("glitch-loader").style.display = "none";
+  document.getElementById("spinner").style.display = "none";
   document
     .querySelector("meta[name=viewport]")
     .setAttribute("content", originalViewport);
